@@ -7,6 +7,8 @@ import productos.dulce.*;
 import monedas.*;
 import enumeraciones.*;
 
+import java.sql.SQLOutput;
+
 /**
  * Clase que simula ser una persona
  * que compra un producto y lo consume.
@@ -38,15 +40,19 @@ public class Comprador {
      * @throws PagoInsuficienteException Si el dinero no alcanza
      * @throws PagoIncorrectoException Si se compra sin dinero (Moneda null)
      */
-    public Comprador(Moneda moneda, TipoProducto producto, Expendedor expendedor) throws NoHayProductoException, PagoInsuficienteException, PagoIncorrectoException {
+    public Comprador(Moneda moneda, TipoProducto producto, Expendedor expendedor){
 
         // Variable que almacena el producto comprado.
         // Puede ser null si hubo una excepción.
-        Producto productoComprado;
+        Producto productoComprado = null;
 
         // Se hace la compra del producto seleccionado.
         // Se guarda en la variable.
-        productoComprado = expendedor.comprarProducto(moneda, producto);
+        try {
+            productoComprado = expendedor.comprarProducto(moneda, producto);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         // Variable que almacena el vuelto.
         // Moneda a moneda.
