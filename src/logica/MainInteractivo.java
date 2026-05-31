@@ -114,12 +114,6 @@ public class MainInteractivo {
             //Si hay una excepción, se reporta al usuario
             catch (NoHayProductoException | PagoInsuficienteException | PagoIncorrectoException e) {
                 System.out.println("\nProblema con la compra: " + e.getMessage());
-
-                //Se devuelve moneda
-                Moneda monedaDevuelta = expendedor.getVuelto();
-                if(monedaDevuelta != null) {
-                    System.out.println("Devolución de $" + monedaDevuelta.getValor());
-                }
                 System.out.println("Intente otra vez\n");
             }
         }
