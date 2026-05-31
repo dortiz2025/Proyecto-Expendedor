@@ -10,7 +10,6 @@ import enumeraciones.*;
 /**
  * Clase que simula ser una persona
  * que compra un producto y lo consume.
- *
  * "Recuerda" que ha consumido
  * y cuanto vuelto le dieron
  */
@@ -32,7 +31,7 @@ public class Comprador {
      *
      * @param moneda Medio de pago para la compra (Puede ser null)
      * @param producto Producto que se ha elegido comprar
-     * @param expendedor Máquina con la que se interactua
+     * @param expendedor Máquina con la que se interactúa
      *
      * @throws NoHayProductoException Si no hay stock del producto o no existe
      * @throws PagoInsuficienteException Si el dinero no alcanza
@@ -42,30 +41,33 @@ public class Comprador {
 
         // Variable que almacena el producto comprado.
         // Puede ser null si hubo una excepción.
-        Producto productoComprado;
+        Producto productoComprado = null;
 
-        // Se hace la compra del producto seleccionado.
-        // Se guarda en la variable.
-        productoComprado = expendedor.comprarProducto(moneda, producto);
+        try {
+            // Se hace la compra del producto seleccionado.
+            // Se guarda en la variable.
+            productoComprado = expendedor.comprarProducto(moneda, producto);
+        } finally {
 
-        // Variable que almacena el vuelto.
-        // Moneda a moneda.
-        Moneda vueltoMoneda;
+            // Variable que almacena el vuelto.
+            // Moneda a moneda.
+            Moneda vueltoMoneda;
 
-        // Se pide vuelto
-        // Mientras no sea null -> Se sigue pidiendo
-        vueltoMoneda = expendedor.getVuelto();
-        vueltoCompra = 0; //Se comienza en 0 de vuelto
-        while(vueltoMoneda != null){
-            //Se suma al vuelto total de la compra
-            vueltoCompra += vueltoMoneda.getValor();
+            // Se pide vuelto
+            // Mientras no sea null -> Se sigue pidiendo
             vueltoMoneda = expendedor.getVuelto();
-        }
+            this.vueltoCompra = 0; //Se comienza en 0 de vuelto
+            while (vueltoMoneda != null) {
+                //Se suma al vuelto total de la compra
+                this.vueltoCompra += vueltoMoneda.getValor();
+                vueltoMoneda = expendedor.getVuelto();
+            }
 
-        // Si existe un producto comprado, se guarda su nombre
-        // Sino, queda null
-        if(productoComprado != null) productoConsumido = productoComprado.consumir();
-        else productoConsumido = null;
+            // Si existe un producto comprado, se guarda su nombre
+            // Sino, queda null
+            if (productoComprado != null) this.productoConsumido = productoComprado.consumir();
+            else this.productoConsumido = null;
+        }
     }
 
     /**
@@ -82,5 +84,7 @@ public class Comprador {
      * @return Entrega el nombre del producto consumido
      */
     public String queConsumiste() {
-        return productoConsumido; }
+        if (productoConsumido != null) return productoConsumido;
+        else return "No hay producto consumido.";
+    }
 }
